@@ -7,8 +7,8 @@ const Product = ({name, count, children, data = true, addToCart, deleteFromCart}
       <div>{count}</div>
       <div>{children}</div>
       {data && <div>data</div>}
-      <button onClick={addToCart}>buy</button>
-      <button onClick={deleteFromCart}>delete</button>
+      {addToCart && <button onClick={addToCart}>buy</button>}
+      {deleteFromCart && <button onClick={deleteFromCart}>delete</button>}
     </div>
   )
 }
