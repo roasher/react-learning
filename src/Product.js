@@ -1,12 +1,12 @@
 import React from "react";
+import styles from "./Product.module.scss"
 
-const Product = ({name, count, children, data = true, addToCart, deleteFromCart}) => {
+const Product = ({name, count, addToCart, deleteFromCart, inCart}) => {
+  console.log(styles)
   return (
-    <div>
+    <div className={inCart ? styles.product__inCart : styles.product}>
       <div>{name}</div>
       <div>{count}</div>
-      <div>{children}</div>
-      {data && <div>data</div>}
       {addToCart && <button onClick={addToCart}>buy</button>}
       {deleteFromCart && <button onClick={deleteFromCart}>delete</button>}
     </div>

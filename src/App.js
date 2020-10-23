@@ -1,6 +1,6 @@
 import React from 'react';
 import Product from "./Product";
-import './App.css';
+import styles from './App.module.scss';
 import {cloneDeep} from "lodash"
 
 class App extends React.Component {
@@ -30,7 +30,7 @@ class App extends React.Component {
   }
 
   getProductById = (id) => {
-    return this.state.products.filter(product => product.id === id)[0]
+    return this.state.products.find(product => product.id === id)
   }
 
   deleteFromCart = (id) => {
@@ -42,14 +42,18 @@ class App extends React.Component {
   }
 
   getProductCountInCart = (id) => {
-    const productInCart = this.state.cart.filter((product) => product.id === id)[0];
+    const productInCart = this.state.cart.find((product) => product.id === id);
     return productInCart ? productInCart.count : 0
+  }
+
+  getProductInCart = (id) => {
+    return this.state.cart.find((product) => product.id === id)
   }
 
   render() {
     return (
-      <div className="app">
-        <header>
+      <div className={styles.app}>
+        <header className={styles.header}>
           <h1>Products List</h1>
         </header>
         <div>
@@ -60,11 +64,12 @@ class App extends React.Component {
                 name={product.name}
                 count={this.getProductCountInCart(product.id)}
                 addToCart={() => this.addToCart(product.id)}
+                inCart={this.getProductInCart(product.id)}
               />
             )
           })}
         </div>
-        <div>
+        <div className={styles.cart}>
           Cart:
           {this.state.cart.map((cartItem) => {
             const product = this.getProductById(cartItem.id);

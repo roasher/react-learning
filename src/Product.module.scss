@@ -1,0 +1,11 @@
+.product {
+  border: 1px solid gray;
+  margin: 5px 0;
+}
+
+.product {
+  &__inCart {
+    background: green;
+  }
+
+}
