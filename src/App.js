@@ -1,6 +1,7 @@
 import React from 'react';
 import Product from "./Product";
 import './App.css';
+import {cloneDeep} from "lodash"
 
 class App extends React.Component {
 
@@ -13,26 +14,18 @@ class App extends React.Component {
   }
 
   addToCart = (id) => {
-    console.log(`add to cart ${id}`)
+    console.log(`add to cart productId: ${id}`)
     this.setState((previousState) => {
-      const cart = previousState.cart;
-      let productArrayIndex = cart.findIndex(product => product.id === id);
-      console.log("index", productArrayIndex)
-      if (productArrayIndex !== -1) {
-        console.log(`filteredProductInCart before ${cart[productArrayIndex].count}`)
-        const left = cart.slice(0, productArrayIndex - 1);
-        const right = cart.slice(productArrayIndex + 1, cart.length);
-        console.log("left", left)
-        console.log("right", right)
-        return {
-          cart: [...left, {
-            id,
-            count: cart[productArrayIndex].count++
-          }, ...right]
-        }
+      const cart = cloneDeep(previousState.cart);
+      const productArrayIndex = cart.findIndex(product => product.id === id);
+      if (productArrayIndex === -1) {
+        // new product
+        cart.push({id, count: 1})
       } else {
-        return {cart: [...cart, {id, count: 1}]};
+        // product already exist
+        cart[productArrayIndex].count++;
       }
+      return {cart}
     })
   }
 
@@ -41,7 +34,7 @@ class App extends React.Component {
   }
 
   deleteFromCart = (id) => {
-    console.log(`deleting ${id}`)
+    console.log(`deleting productId: ${id}`)
     this.setState((previousState) => {
       const allButProductWithInputId = previousState.cart.filter(product => product.id !== id);
       return {cart: allButProductWithInputId}
@@ -56,7 +49,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <header>APP</header>
+        <header>
+          <h1>Products List</h1>
+        </header>
         <div>
           {this.state.products.map((product) => {
             return (
@@ -74,12 +69,12 @@ class App extends React.Component {
           {this.state.cart.map((cartItem) => {
             const product = this.getProductById(cartItem.id);
             return (
-              <Product
-                key={product.id}
-                name={product.name}
-                count={cartItem.count}
-                deleteFromCart={() => this.deleteFromCart(product.id)}
-              />
+              <div key={product.id}>
+                <span>
+                  {product.name + ":" + this.getProductCountInCart(product.id)}
+                </span>
+                <button onClick={() => this.deleteFromCart(product.id)}>Delete</button>
+              </div>
             )
           })}
         </div>
