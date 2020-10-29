@@ -1,8 +1,8 @@
 import React from 'react';
-import Product from "./Product";
+import Product from "./components/Product";
 import styles from './App.module.scss';
 import {cloneDeep} from "lodash"
-import Cart from "./Cart";
+import Cart from "./components/Cart";
 
 class App extends React.Component {
 

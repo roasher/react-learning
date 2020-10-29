@@ -1,5 +1,6 @@
 import React from 'react'
-import styles from "./App.module.scss";
+import styles from "../App.module.scss";
+import CartItem from "./CartItem";
 
 class Cart extends React.Component {
   render() {
@@ -9,12 +10,12 @@ class Cart extends React.Component {
         {cartItems.map((cartItem) => {
           const id = cartItem.id;
           return (
-            <div key={id}>
-                <span>
-                  {getLabelByProductId(id)}
-                </span>
-              <button onClick={() => deleteFromCartById(id)}>Delete</button>
-            </div>
+            <CartItem
+              key={id}
+              productId={id}
+              label={getLabelByProductId(id)}
+              deleteProduct={deleteFromCartById}
+            />
           )
         })}
       </div>
