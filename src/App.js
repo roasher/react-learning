@@ -13,7 +13,16 @@ class App extends React.Component {
       {id: '1', name: "Avocado"},
       {id: '2', name: "Apple"}
     ],
-    cart: [{id: '1', count: 12}]
+    cart: [{id: '1', count: 12}],
+    inputData: ''
+  }
+
+  componentDidMount() {
+    this.inputRef.focus()
+  }
+
+  inputChangeHandler = (value) => {
+    this.setState({inputData: value})
   }
 
   addToCart = (id) => {
@@ -85,6 +94,15 @@ class App extends React.Component {
             getLabelByProductId={this.getLabelByProductId}
             deleteFromCartById={this.deleteFromCartById}
           />
+          <div>
+            <input
+              type='text'
+              onChange={event => this.inputChangeHandler(event.target.value)}
+              value={this.state.inputData}
+              ref={ref => this.inputRef = ref}
+            />
+            <div>Input field: {this.state.inputData}</div>
+          </div>
         </div>
       </ErrorBoundary>
     );

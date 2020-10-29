@@ -3,7 +3,7 @@ import styles from "../Product.module.scss"
 
 class Product extends React.Component {
   render() {
-    console.log('redner')
+    console.log('render')
     const {name, count, addToCart, deleteFromCart, inCart} = this.props;
     return (
       <div className={inCart ? styles.product__inCart : styles.product}>
