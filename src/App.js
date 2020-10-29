@@ -4,6 +4,7 @@ import styles from './App.module.scss';
 import {cloneDeep} from "lodash"
 import Cart from "./components/Cart";
 import ErrorBoundary from "./components/ErrorBoundary";
+import withWindowSize from "./hoc/withWindowSize";
 
 class App extends React.Component {
 
@@ -63,7 +64,7 @@ class App extends React.Component {
       <ErrorBoundary>
         <div className={styles.app}>
           <header className={styles.header}>
-            <h1>Products List</h1>
+            {!this.props.isMobile && <h1>Products List</h1>}
           </header>
           <div>
             {this.state.products.map((product) => {
@@ -90,4 +91,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withWindowSize(App);
