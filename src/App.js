@@ -2,6 +2,7 @@ import React from 'react';
 import Product from "./Product";
 import styles from './App.module.scss';
 import {cloneDeep} from "lodash"
+import Cart from "./Cart";
 
 class App extends React.Component {
 
@@ -33,7 +34,7 @@ class App extends React.Component {
     return this.state.products.find(product => product.id === id)
   }
 
-  deleteFromCart = (id) => {
+  deleteFromCartById = (id) => {
     console.log(`deleting productId: ${id}`)
     this.setState((previousState) => {
       const allButProductWithInputId = previousState.cart.filter(product => product.id !== id);
@@ -48,6 +49,12 @@ class App extends React.Component {
 
   getProductInCart = (id) => {
     return this.state.cart.find((product) => product.id === id)
+  }
+
+  getLabelByProductId = (id) => {
+    console.log('id:', id)
+    const product = this.getProductById(id);
+    return product.name + ":" + this.getProductCountInCart(product.id)
   }
 
   render() {
@@ -69,20 +76,12 @@ class App extends React.Component {
             )
           })}
         </div>
-        <div className={styles.cart}>
-          Cart:
-          {this.state.cart.map((cartItem) => {
-            const product = this.getProductById(cartItem.id);
-            return (
-              <div key={product.id}>
-                <span>
-                  {product.name + ":" + this.getProductCountInCart(product.id)}
-                </span>
-                <button onClick={() => this.deleteFromCart(product.id)}>Delete</button>
-              </div>
-            )
-          })}
-        </div>
+        <div>Cart</div>
+        <Cart
+          cartItems={this.state.cart}
+          getLabelByProductId={this.getLabelByProductId}
+          deleteFromCartById={this.deleteFromCartById}
+        />
       </div>
     );
   }
