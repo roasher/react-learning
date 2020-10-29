@@ -3,6 +3,7 @@ import Product from "./components/Product";
 import styles from './App.module.scss';
 import {cloneDeep} from "lodash"
 import Cart from "./components/Cart";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 class App extends React.Component {
 
@@ -59,30 +60,32 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className={styles.app}>
-        <header className={styles.header}>
-          <h1>Products List</h1>
-        </header>
-        <div>
-          {this.state.products.map((product) => {
-            return (
-              <Product
-                key={product.id}
-                name={product.name}
-                count={this.getProductCountInCart(product.id)}
-                addToCart={() => this.addToCart(product.id)}
-                inCart={this.getProductInCart(product.id)}
-              />
-            )
-          })}
+      <ErrorBoundary>
+        <div className={styles.app}>
+          <header className={styles.header}>
+            <h1>Products List</h1>
+          </header>
+          <div>
+            {this.state.products.map((product) => {
+              return (
+                <Product
+                  key={product.id}
+                  name={product.name}
+                  count={this.getProductCountInCart(product.id)}
+                  addToCart={() => this.addToCart(product.id)}
+                  inCart={this.getProductInCart(product.id)}
+                />
+              )
+            })}
+          </div>
+          <div>Cart</div>
+          <Cart
+            cartItems={this.state.cart}
+            getLabelByProductId={this.getLabelByProductId}
+            deleteFromCartById={this.deleteFromCartById}
+          />
         </div>
-        <div>Cart</div>
-        <Cart
-          cartItems={this.state.cart}
-          getLabelByProductId={this.getLabelByProductId}
-          deleteFromCartById={this.deleteFromCartById}
-        />
-      </div>
+      </ErrorBoundary>
     );
   }
 }
