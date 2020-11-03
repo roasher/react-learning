@@ -5,6 +5,8 @@ import {cloneDeep} from "lodash"
 import Cart from "./components/Cart";
 import ErrorBoundary from "./components/ErrorBoundary";
 import withWindowSize from "./hoc/withWindowSize";
+import Header from "./components/Header";
+import {ThemeContext, themes} from "./theme-context";
 
 class App extends React.Component {
 
@@ -14,7 +16,8 @@ class App extends React.Component {
       {id: '2', name: "Apple"}
     ],
     cart: [{id: '1', count: 12}],
-    inputData: ''
+    inputData: '',
+    theme: 'light'
   }
 
   componentDidMount() {
@@ -68,42 +71,54 @@ class App extends React.Component {
     return product.name + ":" + this.getProductCountInCart(product.id)
   }
 
+  changeThemeHandler = (event) => {
+    this.setState({theme: event.target.value})
+  }
+
   render() {
     return (
       <ErrorBoundary>
-        <div className={styles.app}>
-          <header className={styles.header}>
-            {!this.props.isMobile && <h1>Products List</h1>}
-          </header>
+        <ThemeContext.Provider value={this.state.theme}>
           <div>
-            {this.state.products.map((product) => {
-              return (
-                <Product
-                  key={product.id}
-                  name={product.name}
-                  count={this.getProductCountInCart(product.id)}
-                  addToCart={() => this.addToCart(product.id)}
-                  inCart={this.getProductInCart(product.id)}
-                />
-              )
-            })}
+            <span>Theme: </span>
+            <select onChange={this.changeThemeHandler}>
+              {Object.keys(themes).map(value => (
+                <option key={value}>{value}</option>
+              ))}
+            </select>
           </div>
-          <div>Cart</div>
-          <Cart
-            cartItems={this.state.cart}
-            getLabelByProductId={this.getLabelByProductId}
-            deleteFromCartById={this.deleteFromCartById}
-          />
-          <div>
-            <input
-              type='text'
-              onChange={event => this.inputChangeHandler(event.target.value)}
-              value={this.state.inputData}
-              ref={ref => this.inputRef = ref}
+          <Header/>
+          <div className={styles.app}>
+            <div>
+              {this.state.products.map((product) => {
+                return (
+                  <Product
+                    key={product.id}
+                    name={product.name}
+                    count={this.getProductCountInCart(product.id)}
+                    addToCart={() => this.addToCart(product.id)}
+                    inCart={this.getProductInCart(product.id)}
+                  />
+                )
+              })}
+            </div>
+            <div>Cart</div>
+            <Cart
+              cartItems={this.state.cart}
+              getLabelByProductId={this.getLabelByProductId}
+              deleteFromCartById={this.deleteFromCartById}
             />
-            <div>Input field: {this.state.inputData}</div>
+            <div>
+              <input
+                type='text'
+                onChange={event => this.inputChangeHandler(event.target.value)}
+                value={this.state.inputData}
+                ref={ref => this.inputRef = ref}
+              />
+              <div>Input field: {this.state.inputData}</div>
+            </div>
           </div>
-        </div>
+        </ThemeContext.Provider>
       </ErrorBoundary>
     );
   }
