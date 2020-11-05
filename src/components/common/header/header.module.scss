@@ -1,0 +1,12 @@
+.header {
+  display: block;
+  width: 100%;
+  background-color: lightgray;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
