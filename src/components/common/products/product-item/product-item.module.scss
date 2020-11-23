@@ -1,3 +1,15 @@
 .productItem {
-  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+}
+
+.button {
+  margin-top: auto;
 }
