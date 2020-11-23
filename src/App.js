@@ -28,6 +28,10 @@ class App extends React.Component {
         }))
         console.log(this.state);
       })
+      .catch(error => {
+        console.log("error", error)
+        this.setState({products: {error: error}})
+      })
   }
 
   componentDidMount() {
@@ -39,8 +43,9 @@ class App extends React.Component {
     return (
       <ErrorBoundary>
         <Layout>
-          {products.isFetched && 'Loading...'}
+          {products.isFetched && !products.error && 'Loading...'}
           {!products.isFetched && !products.error && <ProductList products={products}/>}
+          {products.error && 'Error loading products'}
         </Layout>
       </ErrorBoundary>
     );
