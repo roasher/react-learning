@@ -13,6 +13,10 @@ class Api {
     return this._doFetch(resultUrl, {method: "GET", ...config})
   }
 
+  getProduct = (id) => {
+    return this.get(`/products/${id}`);
+  }
+
   post = (url, data, config) => {
     this._doFetch(url, {
       method: "POST",

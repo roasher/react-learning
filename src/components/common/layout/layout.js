@@ -5,13 +5,13 @@ import {Footer} from "../footer";
 import {PageTitle} from "../page-title";
 import {MainContent} from "../main-content";
 
-export const Layout = ({children, aside}) => {
+export const Layout = ({children, aside, pageTitle}) => {
   return (
     <div className={styles.layout}>
       <Header/>
-      <PageTitle>Page Title</PageTitle>
+      <PageTitle>{pageTitle}</PageTitle>
       <MainContent>
-        {aside && aside}
+        {aside && <aside>{aside}</aside>}
         <main>{children}</main>
       </MainContent>
       <Footer/>
