@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './header.module.scss'
-import {Wrapper} from "../../ui/wrapper";
+import {Wrapper} from "../../ui";
 import {Cart} from "./cart";
 
 export const Header = () => {
