@@ -6,12 +6,13 @@ import {withRouter} from "react-router";
 
 class ProductListView extends React.Component {
   render() {
+    console.log(this.props);
     const {products = [], toggleCart, history} = this.props;
     const {productsInCart} = this.context;
     return (
       <div className={styles.productList}>
         <button onClick={() => history.push("/catalog/2")}>To Item</button>
-        {products.data.map(product => {
+        {products.map(product => {
           return (
             <ProductItem
               key={product.id}
