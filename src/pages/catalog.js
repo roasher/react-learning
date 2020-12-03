@@ -1,36 +1,31 @@
 import React from 'react';
 import {Layout} from "../components/common/layout";
 import {ProductList} from "../components/common/products";
-import {CartContext} from "../context";
 import {ProductFilters} from "../components/common/products/product-filters";
 import {connect} from "react-redux";
 import {getCatalogAction} from "../store/catalog/actions";
 import {getCatalogData, getCatalogError, getCatalogIsFetching} from "../store/catalog/selectors";
+import {addToCartAction, getCartSelector, removeFromCartAction} from "../store/cart";
 
 class CatalogPageView extends React.Component {
 
   state = {
-    // map product id: count
-    cart: [],
     categories: [],
     filter: "all"
   }
 
   toggleCart = (id) => {
-    const newCart = this.state.cart.filter(product => product.id !== id);
-    if (newCart.length === this.state.cart.length) {
-      // product is not present in cart
-      newCart.push(this.getProductById(id))
+    const productsInCart = this.props.cartData;
+    console.log(productsInCart)
+    if (productsInCart.find(product => product.id === id)) {
+      this.props.removeFromCart(id);
+    } else {
+      this.props.addToCart(this.getProductById(id))
     }
-    this.setState({cart: newCart});
   }
 
   getProductById = (id) => {
     return this.props.catalog.find(product => product.id === id);
-  }
-
-  getProductsInCart = () => {
-    return this.state.cart;
   }
 
   getCategories = () => {
@@ -51,19 +46,18 @@ class CatalogPageView extends React.Component {
   render() {
     const {catalog, catalogIsFetching, catalogError} = this.props;
     return (
-      <CartContext.Provider value={{productsInCart: this.getProductsInCart(), removeFromCart: this.toggleCart}}>
-        <Layout aside={<ProductFilters data={this.state.categories}
-                                       filter={this.state.filter}
-                                       onChange={this.changeFilter}/>}
-                pageTitle='Catalog page'>
-          {catalogIsFetching && !catalogError && 'Loading...'}
-          {!catalogIsFetching && !catalogError &&
-          <ProductList products={catalog}
-                       toggleCart={this.toggleCart}
-          />}
-          {catalogError && 'Error loading products'}
-        </Layout>
-      </CartContext.Provider>
+      <Layout aside={<ProductFilters data={this.state.categories}
+                                     filter={this.state.filter}
+                                     onChange={this.changeFilter}/>}
+              pageTitle='Catalog page'>
+        {catalogIsFetching && !catalogError && 'Loading...'}
+        {!catalogIsFetching && !catalogError &&
+        <ProductList products={catalog}
+                     productsInCart={this.props.cartData}
+                     toggleCart={this.toggleCart}
+        />}
+        {catalogError && 'Error loading products'}
+      </Layout>
     );
   }
 }
@@ -71,11 +65,14 @@ class CatalogPageView extends React.Component {
 const mapStateToProps = (state) => ({
   catalogIsFetching: getCatalogIsFetching(state),
   catalog: getCatalogData(state),
-  catalogError: getCatalogError(state)
+  catalogError: getCatalogError(state),
+  cartData: getCartSelector(state)
 });
 
-const mapDispatchToProps = (dispath) => ({
-  getCatalog: (categoryName) => dispath(getCatalogAction(categoryName))
+const mapDispatchToProps = (dispatch) => ({
+  getCatalog: (categoryName) => dispatch(getCatalogAction(categoryName)),
+  addToCart: (product) => dispatch(addToCartAction(product)),
+  removeFromCart: (id) => dispatch(removeFromCartAction(id))
 })
 
 export const CatalogPage = connect(mapStateToProps, mapDispatchToProps)(CatalogPageView);

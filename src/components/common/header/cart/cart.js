@@ -1,6 +1,7 @@
 import React from "react"
 import styles from "./cart.module.scss"
-import {CartContext} from "../../../../context/cart";
+import {getCartSelector, removeFromCartAction} from "../../../../store/cart";
+import {connect} from "react-redux";
 
 class CartView extends React.Component {
   state = {
@@ -8,15 +9,15 @@ class CartView extends React.Component {
   }
 
   toggleWindow = () => {
-    const products = this.context.productsInCart;
+    const products = this.props.cartData;
     if (products && products.length) {
       this.setState(prevState => ({isShow: !prevState.isShow}))
     }
   }
 
   render = () => {
-    const products = this.context.productsInCart;
-    const deleteItemFromCart = this.context.removeFromCart;
+    const products = this.props.cartData;
+    const {removeItemFromCart} = this.props;
     const {isShow} = this.state;
     return (
       <div className={styles.cart}>
@@ -27,7 +28,7 @@ class CartView extends React.Component {
               <div key={product.id}
                    className={styles.cartItem}>
                 <span className={styles.cartItemName}>{product.title}</span>
-                <button onClick={() => deleteItemFromCart(product.id)}>x</button>
+                <button onClick={() => removeItemFromCart(product.id)}>x</button>
               </div>
             ))}
           </div>
@@ -38,6 +39,12 @@ class CartView extends React.Component {
   }
 }
 
-CartView.contextType = CartContext
+const mapStateToProps = (store) => ({
+  cartData: getCartSelector(store)
+});
 
-export const Cart = CartView;
+const mapDispatchToProps = (dispatch) => ({
+  removeItemFromCart: (id) => dispatch(removeFromCartAction(id))
+});
+
+export const Cart = connect(mapStateToProps, mapDispatchToProps)(CartView);

@@ -1,14 +1,12 @@
 import React from "react";
 import {ProductItem} from "../product-item";
 import styles from "./product-list.module.scss"
-import {CartContext} from "../../../../context/cart";
 import {withRouter} from "react-router";
 
 class ProductListView extends React.Component {
   render() {
     console.log(this.props);
-    const {products = [], toggleCart, history} = this.props;
-    const {productsInCart} = this.context;
+    const {products = [], productsInCart, toggleCart, history} = this.props;
     return (
       <div className={styles.productList}>
         <button onClick={() => history.push("/catalog/2")}>To Item</button>
@@ -26,7 +24,5 @@ class ProductListView extends React.Component {
     )
   }
 }
-
-ProductListView.contextType = CartContext
 
 export const ProductList = withRouter(ProductListView);

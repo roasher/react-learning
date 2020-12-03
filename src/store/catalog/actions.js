@@ -1,6 +1,6 @@
 import {api} from "../../api";
 import {PRODUCTS_LIMIT} from "../../constants";
-import {CATALOG_FETCH_ERROR, CATALOG_FETCH_REQUEST, CATALOG_FETCH_SUCCESS} from "./types";
+import {CATALOG_FETCH_ERROR, CATALOG_FETCH_REQUEST, CATALOG_FETCH_SUCCESS} from "./action-types";
 
 export const getCatalogAction = (categoryName) => {
   return (dispatch) => {

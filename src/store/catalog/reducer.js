@@ -1,5 +1,5 @@
 import {initialState} from "./state";
-import {CATALOG_FETCH_ERROR, CATALOG_FETCH_REQUEST, CATALOG_FETCH_SUCCESS} from "./types";
+import {CATALOG_FETCH_ERROR, CATALOG_FETCH_REQUEST, CATALOG_FETCH_SUCCESS} from "./action-types";
 
 export const catalogReducer = (state = initialState, action) => {
   switch (action.type) {
