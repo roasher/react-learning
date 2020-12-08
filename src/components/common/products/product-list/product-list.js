@@ -5,7 +5,6 @@ import {withRouter} from "react-router";
 
 class ProductListView extends React.Component {
   render() {
-    console.log(this.props);
     const {products = [], productsInCart, toggleCart, history} = this.props;
     return (
       <div className={styles.productList}>
