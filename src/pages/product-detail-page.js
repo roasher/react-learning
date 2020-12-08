@@ -1,60 +1,50 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Layout} from "../components/common/layout";
 import {api} from "../api";
 import {PRICE_SYMBOL} from "../constants";
 
-class ProductView extends React.Component {
+export const ProductDetailPage = ({match}) => {
+  const [product, setProduct] = useState(null);
+  const [isFetching, setFetching] = useState(false);
+  const [error, setError] = useState(null);
 
-  state = {
-    data: null,
-    isFetched: false,
-    error: null
-  }
+  const getProduct = () => {
+    setFetching(true);
 
-  getProduct = () => {
-    this.setState({isFetched: true});
-
-    api.getProduct(this.props.match.params.productId)
+    api.getProduct(match.params.productId)
       .then(response => {
-        this.setState(prevState => ({
-          ...prevState, data: response, isFetched: false, error: null
-        }))
+        setProduct(response);
+        setFetching(false);
+        setError(null);
       })
       .catch(error => {
         console.log("error", error)
-        this.setState({data: null, error: error})
+        setError(error)
       })
   }
+  const getProductSingleLoad = useCallback(getProduct, []);
 
-  componentDidMount() {
-    this.getProduct();
-  }
+  useEffect(() => {
+    getProductSingleLoad()
+    },[getProductSingleLoad]);
 
-  render() {
-    const product = this.state.data;
-    console.log(product)
-    const {isFetched} = this.state;
-    const {error} = this.state;
-    return (
-      <Layout>
-        {isFetched && !error && 'Loading...'}
-        {!isFetched && !error && product &&
-        <div>
-          <h1>{product.title}</h1>
-          <picture>
-            <img
-              src={product.image}
-              alt={product.title}
-              itemProp={product.title}
-              loading="lazy"/>
-          </picture>
-          <div>{product.description}</div>
-          <div>{`${product.price} ${PRICE_SYMBOL}`}</div>
-        </div>}
-        {error && 'Error loading products'}
-      </Layout>
-    )
-  }
+  return (
+    <Layout>
+      {isFetching && !error && 'Loading...'}
+      {!error && product &&
+      <div>
+        <h1>{product.title}</h1>
+        <picture>
+          <img
+            src={product.image}
+            alt={product.title}
+            itemProp={product.title}
+            loading="lazy"/>
+        </picture>
+        <div>{product.description}</div>
+        <div>{`${product.price} ${PRICE_SYMBOL}`}</div>
+      </div>}
+      {error && 'Error loading products'}
+    </Layout>
+  )
 }
-
-export const ProductDetailPage = ProductView;
