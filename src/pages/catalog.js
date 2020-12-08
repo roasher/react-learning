@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCatalogAction} from "../store/catalog/actions";
 import {getCatalogData, getCatalogError, getCatalogIsFetching} from "../store/catalog/selectors";
 import {addToCartAction, getCartSelector, removeFromCartAction} from "../store/cart";
+import {useLogger} from "../hooks";
 
 const heavyOperation = (val) => {
   let i = 0;
@@ -18,20 +19,22 @@ const heavyOperation = (val) => {
 
 export const CatalogPage = () => {
   const catalog = useSelector(getCatalogData);
-  const catalogIsFetching= useSelector(getCatalogIsFetching);
-  const catalogError= useSelector(getCatalogError);
-  const cartData= useSelector(getCartSelector);
+  const catalogIsFetching = useSelector(getCatalogIsFetching);
+  const catalogError = useSelector(getCatalogError);
+  const cartData = useSelector(getCartSelector);
 
   const dispatch = useDispatch();
-  const getCatalog= useCallback((categoryName) => dispatch(getCatalogAction(categoryName)), [dispatch]);
-  const addToCart= useCallback((product) => dispatch(addToCartAction(product)), [dispatch]);
+  const getCatalog = useCallback((categoryName) => dispatch(getCatalogAction(categoryName)), [dispatch]);
+  const addToCart = useCallback((product) => dispatch(addToCartAction(product)), [dispatch]);
   const removeFromCart = useCallback((id) => dispatch(removeFromCartAction(id)), [dispatch]);
 
-  const [categories, ] = useState(["men clothing", "electronics", "jewelery", "women clothing"]);
+  const [categories,] = useState(["men clothing", "electronics", "jewelery", "women clothing"]);
   const [filter, setFilter] = useState("all");
   useEffect(() => {
     getCatalog();
   }, [getCatalog])
+
+  useLogger(filter);
 
   const data = useMemo(() => heavyOperation(filter.length), [filter]);
 
@@ -60,7 +63,7 @@ export const CatalogPage = () => {
                                    filter={filter}
                                    onChange={changeFilter}/>}
             pageTitle='Catalog page'>
-      <div>{data}</div>
+      <div hidden={true}>{data}</div>
       {catalogIsFetching && !catalogError && 'Loading...'}
       {!catalogIsFetching && !catalogError &&
       <ProductList products={catalog}

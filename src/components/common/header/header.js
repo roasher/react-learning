@@ -4,8 +4,10 @@ import {Wrapper} from "../../ui";
 import {Cart} from "./cart";
 import {Navigation} from "./navigation";
 import {Logo} from "./logo";
+import {useInput} from "../../../hooks";
 
 export const Header = () => {
+  const input = useInput('')
   return (
     <header className={styles.header}>
       <Wrapper className={styles.wrapper}>
@@ -15,8 +17,9 @@ export const Header = () => {
         </div>
         <div>
           <input type="text"
-                 value=""
-                 placeholder="search"/>
+                 placeholder="search"
+                 {...input}
+          />
         </div>
         <div>
           <Cart/>
