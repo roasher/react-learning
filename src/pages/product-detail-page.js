@@ -8,10 +8,11 @@ export const ProductDetailPage = ({match}) => {
   const [isFetching, setFetching] = useState(false);
   const [error, setError] = useState(null);
 
-  const getProduct = () => {
+  const productId = match.params.productId;
+  const getProductSingleLoad = useCallback(() => {
     setFetching(true);
 
-    api.getProduct(match.params.productId)
+    api.getProduct(productId)
       .then(response => {
         setProduct(response);
         setFetching(false);
@@ -21,8 +22,7 @@ export const ProductDetailPage = ({match}) => {
         console.log("error", error)
         setError(error)
       })
-  }
-  const getProductSingleLoad = useCallback(getProduct, []);
+  }, [productId]);
 
   useEffect(() => {
     getProductSingleLoad()
