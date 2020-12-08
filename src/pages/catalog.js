@@ -7,6 +7,7 @@ import {getCatalogAction} from "../store/catalog/actions";
 import {getCatalogData, getCatalogError, getCatalogIsFetching} from "../store/catalog/selectors";
 import {addToCartAction, getCartSelector, removeFromCartAction} from "../store/cart";
 import {useLogger} from "../hooks";
+import {TestContext} from "../context/test-context";
 
 const heavyOperation = (val) => {
   let i = 0;
@@ -59,18 +60,20 @@ export const CatalogPage = () => {
   }
 
   return (
-    <Layout aside={<ProductFilters data={categories}
-                                   filter={filter}
-                                   onChange={changeFilter}/>}
-            pageTitle='Catalog page'>
-      <div hidden={true}>{data}</div>
-      {catalogIsFetching && !catalogError && 'Loading...'}
-      {!catalogIsFetching && !catalogError &&
-      <ProductList products={catalog}
-                   productsInCart={cartData}
-                   toggleCart={toggleCart}
-      />}
-      {catalogError && 'Error loading products'}
-    </Layout>
+    <TestContext.Provider value={'test value'}>
+      <Layout aside={<ProductFilters data={categories}
+                                     filter={filter}
+                                     onChange={changeFilter}/>}
+              pageTitle='Catalog page'>
+        <div hidden={true}>{data}</div>
+        {catalogIsFetching && !catalogError && 'Loading...'}
+        {!catalogIsFetching && !catalogError &&
+        <ProductList products={catalog}
+                     productsInCart={cartData}
+                     toggleCart={toggleCart}
+        />}
+        {catalogError && 'Error loading products'}
+      </Layout>
+    </TestContext.Provider>
   );
 }
