@@ -1,7 +1,5 @@
-import React from "react";
-import styles from "./wrapper.module.scss"
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
+import styles from './wrapper.module.scss';
 
-export const Wrapper = ({children, className}) => {
-  return <div className={clsx(styles.wrapper, className)}>{children}</div>
-}
+export const Wrapper = ({ children, className }) => <div className={clsx(styles.wrapper, className)}>{children}</div>;

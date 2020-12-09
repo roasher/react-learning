@@ -1,22 +1,21 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Layout} from "../components/common/layout";
-import {ProductList} from "../components/common/products";
-import {ProductFilters} from "../components/common/products/product-filters";
-import {useDispatch, useSelector} from "react-redux";
-import {getCatalogAction} from "../store/catalog/actions";
-import {getCatalogData, getCatalogError, getCatalogIsFetching} from "../store/catalog/selectors";
-import {addToCartAction, getCartSelector, removeFromCartAction} from "../store/cart";
-import {useLogger} from "../hooks";
-import {TestContext} from "../context/test-context";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Layout } from '../components/common/layout';
+import { ProductList } from '../components/common/products';
+import { ProductFilters } from '../components/common/products/product-filters';
+import { getCatalogAction } from '../store/catalog/actions';
+import { getCatalogData, getCatalogError, getCatalogIsFetching } from '../store/catalog/selectors';
+import { addToCartAction, getCartSelector, removeFromCartAction } from '../store/cart';
+import { useLogger } from '../hooks';
+import { TestContext } from '../context/test-context';
 
 const heavyOperation = (val) => {
   let i = 0;
   while (i < 100000) {
-    i++
+    i += 1;
   }
-  console.log("create data")
   return val * 2;
-}
+};
 
 export const CatalogPage = () => {
   const catalog = useSelector(getCatalogData);
@@ -29,51 +28,46 @@ export const CatalogPage = () => {
   const addToCart = useCallback((product) => dispatch(addToCartAction(product)), [dispatch]);
   const removeFromCart = useCallback((id) => dispatch(removeFromCartAction(id)), [dispatch]);
 
-  const [categories,] = useState(["men clothing", "electronics", "jewelery", "women clothing"]);
-  const [filter, setFilter] = useState("all");
+  const [categories] = useState(['men clothing', 'electronics', 'jewelery', 'women clothing']);
+  const [filter, setFilter] = useState('all');
   useEffect(() => {
     getCatalog();
-  }, [getCatalog])
+  }, [getCatalog]);
 
   useLogger(filter);
 
   const data = useMemo(() => heavyOperation(filter.length), [filter]);
 
-  const getProductById = (id) => {
-    return catalog.find(product => product.id === id);
-  }
+  const getProductById = (id) => catalog.find((product) => product.id === id);
 
   const toggleCart = (id) => {
     const productsInCart = cartData;
-    console.log(productsInCart)
-    if (productsInCart.find(product => product.id === id)) {
+    if (productsInCart.find((product) => product.id === id)) {
       removeFromCart(id);
     } else {
-      addToCart(getProductById(id))
+      addToCart(getProductById(id));
     }
-  }
+  };
 
   const changeFilter = (event) => {
-    const value = event.target.value;
+    const { value } = event.target;
     setFilter(event.target.value);
-    getCatalog(value === "all" ? null : value);
-  }
+    getCatalog(value === 'all' ? null : value);
+  };
 
   return (
-    <TestContext.Provider value={'test value'}>
-      <Layout aside={<ProductFilters data={categories}
-                                     filter={filter}
-                                     onChange={changeFilter}/>}
-              pageTitle='Catalog page'>
-        <div hidden={true}>{data}</div>
+    <TestContext.Provider value="test value">
+      <Layout
+        aside={<ProductFilters data={categories} filter={filter} onChange={changeFilter} />}
+        pageTitle="Catalog page"
+      >
+        <div hidden>{data}</div>
         {catalogIsFetching && !catalogError && 'Loading...'}
-        {!catalogIsFetching && !catalogError &&
-        <ProductList products={catalog}
-                     productsInCart={cartData}
-                     toggleCart={toggleCart}
-        />}
+        {!catalogIsFetching && !catalogError && (
+          <ProductList products={catalog} productsInCart={cartData} toggleCart={toggleCart} />
+        )}
         {catalogError && 'Error loading products'}
       </Layout>
     </TestContext.Provider>
   );
-}
+};

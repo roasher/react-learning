@@ -1,7 +1,5 @@
-export const initialState = (
-  {
-    data: [],
-    isFetching: false,
-    error: null
-  }
-)
+export const initialState = {
+  data: [],
+  isFetching: false,
+  error: null,
+};

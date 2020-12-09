@@ -1,8 +1,6 @@
-import React from "react";
+import React from 'react';
 
-export const PageTitle = ({children}) => {
+export const PageTitle = ({ children }) => {
   if (!children) return null;
-  return (
-    <h1>{children}</h1>
-  )
-}
+  return <h1>{children}</h1>;
+};

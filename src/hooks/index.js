@@ -1,2 +1,2 @@
-export * from './use-logger'
-export * from './use-input'
+export * from './use-logger';
+export * from './use-input';

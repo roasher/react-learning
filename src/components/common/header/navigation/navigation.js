@@ -1,6 +1,6 @@
-import React from "react";
-import {Link} from "react-router-dom";
-import styles from "./navigation.module.scss"
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styles from './navigation.module.scss';
 
 export const Navigation = () => (
   <nav>
@@ -10,4 +10,4 @@ export const Navigation = () => (
       </li>
     </ul>
   </nav>
-)
+);
