@@ -9,7 +9,7 @@ import { addToCartAction, getCartSelector, removeFromCartAction } from '../store
 import { useLogger } from '../hooks';
 import { TestContext } from '../context/test-context';
 
-const heavyOperation = (val) => {
+const heavyOperation = val => {
   let i = 0;
   while (i < 100000) {
     i += 1;
@@ -24,9 +24,9 @@ export const CatalogPage = () => {
   const cartData = useSelector(getCartSelector);
 
   const dispatch = useDispatch();
-  const getCatalog = useCallback((categoryName) => dispatch(getCatalogAction(categoryName)), [dispatch]);
-  const addToCart = useCallback((product) => dispatch(addToCartAction(product)), [dispatch]);
-  const removeFromCart = useCallback((id) => dispatch(removeFromCartAction(id)), [dispatch]);
+  const getCatalog = useCallback(categoryName => dispatch(getCatalogAction(categoryName)), [dispatch]);
+  const addToCart = useCallback(product => dispatch(addToCartAction(product)), [dispatch]);
+  const removeFromCart = useCallback(id => dispatch(removeFromCartAction(id)), [dispatch]);
 
   const [categories] = useState(['men clothing', 'electronics', 'jewelery', 'women clothing']);
   const [filter, setFilter] = useState('all');
@@ -38,18 +38,17 @@ export const CatalogPage = () => {
 
   const data = useMemo(() => heavyOperation(filter.length), [filter]);
 
-  const getProductById = (id) => catalog.find((product) => product.id === id);
+  const getProductById = id => catalog.find(product => product.id === id);
 
-  const toggleCart = (id) => {
-    const productsInCart = cartData;
-    if (productsInCart.find((product) => product.id === id)) {
+  const toggleCart = id => {
+    if (cartData.find(product => product.id === id)) {
       removeFromCart(id);
     } else {
       addToCart(getProductById(id));
     }
   };
 
-  const changeFilter = (event) => {
+  const changeFilter = event => {
     const { value } = event.target;
     setFilter(event.target.value);
     getCatalog(value === 'all' ? null : value);
@@ -59,8 +58,7 @@ export const CatalogPage = () => {
     <TestContext.Provider value="test value">
       <Layout
         aside={<ProductFilters data={categories} filter={filter} onChange={changeFilter} />}
-        pageTitle="Catalog page"
-      >
+        pageTitle="Catalog page">
         <div hidden>{data}</div>
         {catalogIsFetching && !catalogError && 'Loading...'}
         {!catalogIsFetching && !catalogError && (

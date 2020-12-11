@@ -5,7 +5,7 @@ import styles from './product-filter.module.scss';
 export const ProductFilters = ({ data, onChange, filter }) => (
   <div className={styles.list}>
     <Radio text="all" value="all" checked={filter === 'all'} onChange={onChange} />
-    {data.map((dataItem) => (
+    {data.map(dataItem => (
       <Radio key={dataItem} text={dataItem} value={dataItem} onChange={onChange} checked={filter === dataItem} />
     ))}
   </div>

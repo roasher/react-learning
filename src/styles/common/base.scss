@@ -3,6 +3,7 @@
 :before {
   box-sizing: border-box;
 }
+
 html {
   min-height: 100vh !important;
 }
@@ -31,10 +32,11 @@ button {
 
 ul,
 ol {
-  padding-left: 2em;
   margin: 0;
+  padding-left: 2em;
   list-style: none;
 }
+
 article,
 aside,
 figcaption,
@@ -47,6 +49,7 @@ nav,
 section {
   display: block;
 }
+
 hr {
   display: block;
   width: 100%;
@@ -57,9 +60,9 @@ hr {
 }
 
 pre {
-  padding: 16px;
   margin-top: 0;
   margin-bottom: 1rem;
+  padding: 16px;
   overflow: auto;
   font-size: 12px;
   line-height: 1.45;
@@ -71,8 +74,8 @@ pre {
 
 code {
   display: inline-block;
-  padding: 0.2em 0.4em;
   margin: 0;
+  padding: 0.2em 0.4em;
   font-size: 85%;
   background-color: rgba(27, 31, 35, 0.05);
   border-radius: 3px;

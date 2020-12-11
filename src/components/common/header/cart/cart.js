@@ -19,7 +19,7 @@ export const CartView = ({ cartData: products, removeItemFromCart }) => {
       </button>
       {isShow && products && products.length > 0 && (
         <div className={styles.cartWindow}>
-          {products.map((product) => (
+          {products.map(product => (
             <div key={product.id} className={styles.cartItem}>
               <span className={styles.cartItemName}>{product.title}</span>
               <button onClick={() => removeItemFromCart(product.id)} type="button">
@@ -31,18 +31,18 @@ export const CartView = ({ cartData: products, removeItemFromCart }) => {
       )}
       <div>
         Total price:
-        {products.map((product) => product.price).reduce((a, b) => a + b, 0)}
+        {products.map(product => product.price).reduce((a, b) => a + b, 0)}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (store) => ({
+const mapStateToProps = store => ({
   cartData: getCartSelector(store),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  removeItemFromCart: (id) => dispatch(removeFromCartAction(id)),
+const mapDispatchToProps = dispatch => ({
+  removeItemFromCart: id => dispatch(removeFromCartAction(id)),
 });
 
 export const Cart = connect(mapStateToProps, mapDispatchToProps)(CartView);

@@ -1,0 +1,12 @@
+ls:
+  .js: kebab-case
+  .ts: kebab-case | camelCase
+
+ignore:
+  - node_modules
+  - build
+  - stylelint.config.js
+  - .\src\App.js
+  - .\src\App.test.js
+  - .\src\serviceWorker.js
+  - .\src\setupTests.js

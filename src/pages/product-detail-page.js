@@ -14,13 +14,12 @@ export const ProductDetailPage = ({ match }) => {
 
     api
       .getProduct(productId)
-      .then((response) => {
+      .then(response => {
         setProduct(response);
         setFetching(false);
         setError(null);
       })
-      .catch((fetchError) => {
-        console.log('fetchError', fetchError);
+      .catch(fetchError => {
         setError(fetchError);
       });
   }, [productId]);

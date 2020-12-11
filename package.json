@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ls-lint/ls-lint": "^1.9.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.1",
-    "lodash": "^4.17.20",
+    "husky": "^4.3.5",
+    "lint-staged": "^10.5.3",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -24,7 +26,23 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "npm run lint:eslint && npm run lint:stylelint && ls-lint",
+    "lint:fix": "npm run lint:eslint -- --fix && npm run lint:stylelint -- --fix && npm run lint:ls",
+    "lint:stylelint": "stylelint src/**/*.{css,scss}",
+    "lint:stylelint:report": "stylelint src/**/*.{css,scss} --output-file reports/stylelint-report.txt",
+    "lint:eslint": "eslint ./src --ext .js,.jsx",
+    "lint:eslint:report": "eslint ./src --ext .js,.jsx --output-file reports/eslint-report.json --format json"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pretty-quick --staged && git add"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,6 +68,14 @@
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "2.2.1"
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "stylelint": "^13.8.0",
+    "stylelint-config-airbnb": "0.0.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-order": "^4.1.0",
+    "stylelint-prettier": "^1.1.2",
+    "stylelint-scss": "^3.18.0"
   }
 }

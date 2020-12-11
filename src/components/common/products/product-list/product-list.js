@@ -12,11 +12,11 @@ const ProductListView = ({ products = [], productsInCart, toggleCart, history })
       <button onClick={() => history.push('/catalog/2')} type="button">
         To Item
       </button>
-      {products.map((product) => (
+      {products.map(product => (
         <ProductItem
           key={product.id}
           toggleCart={toggleCart}
-          inCart={productsInCart.find((item) => item.id === product.id)}
+          inCart={productsInCart.find(item => item.id === product.id)}
           {...product}
         />
       ))}
